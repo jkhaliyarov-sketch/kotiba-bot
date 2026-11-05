@@ -185,7 +185,7 @@ async def on_voice(message: Message) -> None:
     if not is_allowed(message.from_user.id):
         return await deny(message)
     if not voice.enabled():
-        return await message.answer("🎤 Ovozli xabarlar hali sozlanmagan (OPENAI_API_KEY kerak). Hozircha matn yozing.")
+        return await message.answer("🎤 Ovozli xabarlar hali sozlanmagan (GROQ_API_KEY kerak). Hozircha matn yozing.")
     media = message.voice or message.audio or message.video_note
     data = await download(message, media)
     fname = "voice.ogg" if message.voice else ("audio.mp3" if message.audio else "video.mp4")

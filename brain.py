@@ -61,6 +61,13 @@ def _context_header(chat_id: int) -> str:
     return "\n".join(lines)
 
 
+def _fallback_kwargs() -> dict:
+    """Opus/Sonnet rad etsa, server boshqa modelda qayta urinadi. Haiku'da bu imkoniyat yo'q."""
+    if "haiku" in config.CLAUDE_MODEL:
+        return {}
+    return {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+
+
 def _effort_for(text: str, has_attachment: bool) -> str:
     t = text.lower()
     if has_attachment or len(text) > 600 or "tz" in t.split() or "texnik topshiriq" in t:
@@ -87,8 +94,7 @@ async def handle(chat_id: int, text: str, attachments: list[dict] | None = None,
             tools=tools.TOOLS,
             messages=messages,
             output_config={"effort": effort},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
+            **_fallback_kwargs(),
         )
         if response.stop_reason == "refusal":
             return "Kechirasiz, bu so'rovni bajara olmayman.", out
