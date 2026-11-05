@@ -1,0 +1,7 @@
+aiogram==3.31.0
+anthropic==2.5.0
+openai==3.46.0
+openpyxl>=3.1
+python-docx>=1.1
+gspread>=6.1
+tzdata
